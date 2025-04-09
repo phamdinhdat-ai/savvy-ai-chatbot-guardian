@@ -12,7 +12,19 @@ app = FastAPI(title="SavvyAI Guardian API")
 # Initialize components
 rag_engine = RAGEngine()
 validator = GuardrailsValidator()
-llm = get_llm_model()
+
+# Get model configuration from environment
+model_type = os.environ.get("LLM_MODEL_TYPE", "mock")
+model_name = os.environ.get("LOCAL_MODEL_PATH", "mock-model")
+if model_type == "local":
+    print(f"Initializing local LLM: {model_name}")
+elif model_type == "api":
+    print(f"Initializing API LLM: {model_name}")
+else:
+    print("Using mock LLM for demonstration")
+
+# Initialize LLM model
+llm = get_llm_model(model_name=model_name, model_type=model_type)
 
 class ChatMessage(BaseModel):
     role: str  # "user" or "assistant"
@@ -63,6 +75,14 @@ async def chat(request: ChatRequest):
 @app.get("/health")
 async def health_check():
     return {"status": "healthy"}
+
+@app.get("/models/info")
+async def model_info():
+    """Get information about the currently loaded model"""
+    return {
+        "model_type": model_type,
+        "model_name": model_name
+    }
 
 if __name__ == "__main__":
     import uvicorn

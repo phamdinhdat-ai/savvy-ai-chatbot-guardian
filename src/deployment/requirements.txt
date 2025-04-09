@@ -9,3 +9,8 @@ sentence-transformers==2.2.2
 chromadb==0.4.18
 pytorch==2.1.0
 transformers==4.35.0
+llama-cpp-python==0.2.24
+optimum==1.14.1
+onnxruntime==1.16.3
+accelerate==0.25.0
+bitsandbytes==0.41.1

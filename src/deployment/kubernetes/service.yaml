@@ -9,6 +9,10 @@ spec:
   selector:
     app: savvy-ai-chatbot
   ports:
-  - port: 80
+  - name: http
+    port: 80
+    targetPort: 8000
+  - name: health
+    port: 8080
     targetPort: 8000
   type: ClusterIP
